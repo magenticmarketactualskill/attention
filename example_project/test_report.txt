@@ -1,0 +1,112 @@
+================================================================================
+ATTENTION GEM - Test Script
+================================================================================
+
+Root path: /home/ubuntu/example_project
+
+TEST 1: Reading repository data...
+--------------------------------------------------------------------------------
+Attributes found in 5 paths:
+  - .
+  - lib/core
+  - lib/utils
+  - services/events
+  - services/notifications
+
+Priorities found in 5 paths:
+  - .
+  - lib/core
+  - lib/utils
+  - services/events
+  - services/notifications
+
+TEST 2: Calculating urgency rankings...
+--------------------------------------------------------------------------------
+Top 10 Most Urgent Items:
+ 1. [Operator            ] event_processing_works         | Urgency: 1.0000 | Complete:   0.0%
+    Path: services/events
+ 2. [TechnicalDebt       ] code_coverage                  | Urgency: 0.7200 | Complete:  20.0%
+    Path: services/events
+ 3. [TechnicalDebt       ] refactoring_needed             | Urgency: 0.5600 | Complete:  30.0%
+    Path: lib/core
+ 4. [TechnicalDebt       ] documentation                  | Urgency: 0.5400 | Complete:  10.0%
+    Path: services/events
+ 5. [Performance         ] response_time_sla              | Urgency: 0.5000 | Complete:   0.0%
+    Path: services/notifications
+ 6. [Testing             ] integration_tests              | Urgency: 0.4800 | Complete:  40.0%
+    Path: lib/utils
+ 7. [TechnicalDebt       ] code_coverage                  | Urgency: 0.3500 | Complete:  50.0%
+    Path: lib/utils
+ 8. [TechnicalDebt       ] documentation                  | Urgency: 0.3500 | Complete:  30.0%
+    Path: lib/utils
+ 9. [Performance         ] throughput_target              | Urgency: 0.3500 | Complete:  50.0%
+    Path: services/events
+10. [Performance         ] response_time_sla              | Urgency: 0.3200 | Complete:  60.0%
+    Path: services/events
+
+TEST 3: Generating priority report...
+--------------------------------------------------------------------------------
+========================================================================================================================
+ATTENTION PRIORITY REPORT
+Generated: 2025-11-02 12:41:37
+========================================================================================================================
+
+FACET                     ATTRIBUTE                      COMPLETE PRIORITY URGENCY    PATH                
+------------------------------------------------------------------------------------------------------------------------
+Operator                  event_processing_works            0.0%     1.00     1.0000 services/events     
+TechnicalDebt             code_coverage                    20.0%     0.90     0.7200 services/events     
+TechnicalDebt             refactoring_needed               30.0%     0.80     0.5600 lib/core            
+TechnicalDebt             documentation                    10.0%     0.60     0.5400 services/events     
+Performance               response_time_sla                 0.0%     0.50     0.5000 services/notifica...
+Testing                   integration_tests                40.0%     0.80     0.4800 lib/utils           
+TechnicalDebt             code_coverage                    50.0%     0.70     0.3500 lib/utils           
+TechnicalDebt             documentation                    30.0%     0.50     0.3500 lib/utils           
+Performance               throughput_target                50.0%     0.70     0.3500 services/events     
+Performance               response_time_sla                60.0%     0.80     0.3200 services/events     
+TechnicalDebt             documentation                    40.0%     0.50     0.3000 .                   
+Security                  dependency_updates               50.0%     0.60     0.3000 services/notifica...
+Security                  dependency_updates               50.0%     0.60     0.3000 services/events     
+Security                  dependency_updates               50.0%     0.60     0.3000 lib/core            
+TechnicalDebt             documentation                    40.0%     0.50     0.3000 services/notifica...
+Security                  dependency_updates               50.0%     0.60     0.3000 lib/utils           
+Security                  dependency_updates               50.0%     0.60     0.3000 .                   
+Testing                   unit_tests                       60.0%     0.70     0.2800 lib/utils           
+TechnicalDebt             code_coverage                    60.0%     0.70     0.2800 .                   
+Operator                  error_rate_acceptable            70.0%     0.90     0.2700 services/events     
+TechnicalDebt             code_coverage                    70.0%     0.70     0.2100 services/notifica...
+Architecture              modularity                       70.0%     0.60     0.1800 lib/core            
+Security                  vulnerability_scan               80.0%     0.90     0.1800 services/notifica...
+Security                  vulnerability_scan               80.0%     0.90     0.1800 services/events     
+Security                  vulnerability_scan               80.0%     0.90     0.1800 .                   
+Security                  vulnerability_scan               80.0%     0.90     0.1800 lib/utils           
+Security                  vulnerability_scan               80.0%     0.90     0.1800 lib/core            
+Architecture              api_design                       80.0%     0.70     0.1400 lib/core            
+TechnicalDebt             code_coverage                    85.0%     0.70     0.1050 lib/core            
+Operator                  message_queue_healthy            90.0%     0.80     0.0800 services/events     
+Operator                  push_notification_success        88.0%     0.60     0.0720 services/notifica...
+Operator                  sms_delivery_rate                92.0%     0.80     0.0640 services/notifica...
+TechnicalDebt             documentation                    90.0%     0.50     0.0500 lib/core            
+Operator                  email_delivery_rate              95.0%     0.70     0.0350 services/notifica...
+
+========================================================================================================================
+Total items: 34
+Items with urgency > 0.5: 4
+Items with urgency > 0.8: 1
+========================================================================================================================
+
+TEST 4: Dumping to JSON...
+--------------------------------------------------------------------------------
+Dumped data for 5 paths to /home/ubuntu/example_project/attention_dump.json
+
+TEST 5: JSON dump content preview...
+--------------------------------------------------------------------------------
+Generated at: 2025-11-02T12:41:37-0500
+Paths in dump: 5
+First 3 paths:
+  - .
+  - lib/core
+  - lib/utils
+
+================================================================================
+All tests completed successfully!
+================================================================================

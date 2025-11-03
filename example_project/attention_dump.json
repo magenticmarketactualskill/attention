@@ -1,0 +1,165 @@
+{
+  "generated_at": "2025-11-02T12:41:37-0500",
+  "root_path": "/home/ubuntu/example_project",
+  "data": {
+    ".": {
+      "attributes": {
+        "TechnicalDebt": {
+          "code_coverage": 0.6,
+          "documentation": 0.4
+        },
+        "Security": {
+          "vulnerability_scan": 0.8,
+          "dependency_updates": 0.5
+        }
+      },
+      "priorities": {
+        "TechnicalDebt": {
+          "code_coverage": 0.7,
+          "documentation": 0.5
+        },
+        "Security": {
+          "vulnerability_scan": 0.9,
+          "dependency_updates": 0.6
+        }
+      }
+    },
+    "lib/core": {
+      "attributes": {
+        "TechnicalDebt": {
+          "code_coverage": 0.85,
+          "documentation": 0.9,
+          "refactoring_needed": 0.3
+        },
+        "Security": {
+          "vulnerability_scan": 0.8,
+          "dependency_updates": 0.5
+        },
+        "Architecture": {
+          "modularity": 0.7,
+          "api_design": 0.8
+        }
+      },
+      "priorities": {
+        "TechnicalDebt": {
+          "code_coverage": 0.7,
+          "documentation": 0.5,
+          "refactoring_needed": 0.8
+        },
+        "Security": {
+          "vulnerability_scan": 0.9,
+          "dependency_updates": 0.6
+        },
+        "Architecture": {
+          "modularity": 0.6,
+          "api_design": 0.7
+        }
+      }
+    },
+    "lib/utils": {
+      "attributes": {
+        "TechnicalDebt": {
+          "code_coverage": 0.5,
+          "documentation": 0.3
+        },
+        "Security": {
+          "vulnerability_scan": 0.8,
+          "dependency_updates": 0.5
+        },
+        "Testing": {
+          "unit_tests": 0.6,
+          "integration_tests": 0.4
+        }
+      },
+      "priorities": {
+        "TechnicalDebt": {
+          "code_coverage": 0.7,
+          "documentation": 0.5
+        },
+        "Security": {
+          "vulnerability_scan": 0.9,
+          "dependency_updates": 0.6
+        },
+        "Testing": {
+          "unit_tests": 0.7,
+          "integration_tests": 0.8
+        }
+      }
+    },
+    "services/events": {
+      "attributes": {
+        "TechnicalDebt": {
+          "code_coverage": 0.2,
+          "documentation": 0.1
+        },
+        "Security": {
+          "vulnerability_scan": 0.8,
+          "dependency_updates": 0.5
+        },
+        "Operator": {
+          "event_processing_works": 0.0,
+          "message_queue_healthy": 0.9,
+          "error_rate_acceptable": 0.7
+        },
+        "Performance": {
+          "response_time_sla": 0.6,
+          "throughput_target": 0.5
+        }
+      },
+      "priorities": {
+        "TechnicalDebt": {
+          "code_coverage": 0.9,
+          "documentation": 0.6
+        },
+        "Security": {
+          "vulnerability_scan": 0.9,
+          "dependency_updates": 0.6
+        },
+        "Operator": {
+          "event_processing_works": 1.0,
+          "message_queue_healthy": 0.8,
+          "error_rate_acceptable": 0.9
+        },
+        "Performance": {
+          "response_time_sla": 0.8,
+          "throughput_target": 0.7
+        }
+      }
+    },
+    "services/notifications": {
+      "attributes": {
+        "TechnicalDebt": {
+          "code_coverage": 0.7,
+          "documentation": 0.4
+        },
+        "Security": {
+          "vulnerability_scan": 0.8,
+          "dependency_updates": 0.5
+        },
+        "Operator": {
+          "email_delivery_rate": 0.95,
+          "sms_delivery_rate": 0.92,
+          "push_notification_success": 0.88
+        }
+      },
+      "priorities": {
+        "TechnicalDebt": {
+          "code_coverage": 0.7,
+          "documentation": 0.5
+        },
+        "Security": {
+          "vulnerability_scan": 0.9,
+          "dependency_updates": 0.6
+        },
+        "Operator": {
+          "email_delivery_rate": 0.7,
+          "sms_delivery_rate": 0.8,
+          "push_notification_success": 0.6
+        },
+        "Performance": {
+          "response_time_sla": 0.5
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,142 @@
+@startuml Attention Gem Architecture
+
+!define LIGHTBLUE #E3F2FD
+!define BLUE #2196F3
+!define GREEN #4CAF50
+!define ORANGE #FF9800
+
+package "Attention Gem" {
+  
+  class Attention <<module>> {
+    +root_path : String
+    +configure()
+  }
+  
+  class Engine {
+    +isolate_namespace
+    +config.generators
+    +rake_tasks
+  }
+  
+  class Reader {
+    -root_path : String
+    -attributes_data : Hash
+    -priorities_data : Hash
+    +initialize(root_path)
+    +read_repo() : Hash
+    -find_directories_with_ini_files() : Array
+    -process_directory(dir_path)
+    -get_inherited_data(dir, type) : Hash
+    -read_ini_file(file_path) : Hash
+    -deep_merge(base, override) : Hash
+  }
+  
+  class Calculator {
+    -attributes_data : Hash
+    -priorities_data : Hash
+    +initialize(attributes, priorities)
+    +calculate_priorities() : Array
+    +calculate_urgency() : Array
+  }
+  
+  class Dumper {
+    -root_path : String
+    -output_file : String
+    +initialize(root_path, output_file)
+    +dump_repo() : Hash
+  }
+  
+  class Applier {
+    -root_path : String
+    -input_file : String
+    +initialize(root_path, input_file)
+    +apply_repo() : Hash
+    -write_ini_file(file_path, data)
+  }
+  
+  class Reporter {
+    -root_path : String
+    +initialize(root_path)
+    +priority_list() : String
+    +detailed_report() : Hash
+    -format_report(results) : String
+    -generate_summary(results) : Hash
+    -truncate(str, max_length) : String
+  }
+  
+  package "File System" <<Database>> LIGHTBLUE {
+    class "Attributes.ini" as AttrINI {
+      [Facet]
+      attribute=value (0-1)
+    }
+    
+    class "Priorities.ini" as PrioINI {
+      [Facet]
+      attribute=value (0-1)
+    }
+    
+    class "attention_dump.json" as DumpJSON {
+      generated_at
+      root_path
+      data
+    }
+  }
+  
+  package "Rake Tasks" <<Component>> GREEN {
+    class "attention:read_repo" as TaskRead
+    class "attention:dump:repo" as TaskDump
+    class "attention:apply:repo" as TaskApply
+    class "attention:report:priority_list" as TaskReport
+  }
+}
+
+' Relationships
+Attention --> Engine : contains
+Attention --> Reader : uses
+Attention --> Calculator : uses
+Attention --> Dumper : uses
+Attention --> Applier : uses
+Attention --> Reporter : uses
+
+Reader --> AttrINI : reads
+Reader --> PrioINI : reads
+Reader --> Calculator : provides data
+
+Calculator --> Reporter : provides calculations
+
+Dumper --> Reader : uses
+Dumper --> DumpJSON : writes
+
+Applier --> DumpJSON : reads
+Applier --> AttrINI : writes
+Applier --> PrioINI : writes
+
+Reporter --> Reader : uses
+Reporter --> Calculator : uses
+
+TaskRead --> Reader : invokes
+TaskDump --> Dumper : invokes
+TaskApply --> Applier : invokes
+TaskReport --> Reporter : invokes
+
+note right of Reader
+  Implements hierarchical
+  inheritance of INI files
+  from parent directories
+end note
+
+note right of Calculator
+  Score = attribute × priority
+  Urgency = (1 - attribute) × priority
+  Lower score = higher priority
+  Higher urgency = more important
+end note
+
+note bottom of AttrINI
+  Hierarchical structure:
+  - Root level applies to all
+  - Child overrides parent
+  - Values: 0 (not done) to 1 (complete)
+end note
+
+@enduml

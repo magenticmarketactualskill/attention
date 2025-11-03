@@ -1,0 +1,111 @@
+@startuml Attention Gem Architecture with File Tracking
+
+!define LIGHTBLUE #E3F2FD
+!define BLUE #2196F3
+!define GREEN #4CAF50
+!define ORANGE #FF9800
+!define PURPLE #9C27B0
+
+package "Attention Gem" {
+  
+  class Attention <<module>> {
+    +root_path : String
+    +configure()
+  }
+  
+  class Engine {
+    +isolate_namespace
+    +config.generators
+    +rake_tasks
+  }
+  
+  package "Core Components" {
+    class Reader
+    class Calculator
+    class Dumper
+    class Applier
+    class Reporter
+  }
+  
+  package "File Tracking" <<Frame>> PURPLE {
+    class GitIntegration {
+      +git_repository?() : boolean
+      +get_object_id(file_path) : String
+    }
+    
+    class FileScanner {
+      +scan_directory(dir_path) : Array
+      +scan_repository() : Hash
+      +file_facet_name(filename) : String
+    }
+    
+    class FileTracker {
+      +scan_and_update(dir_path)
+      +update_git_ids(dir_path)
+      +cleanup(dir_path)
+      +statistics(dir_path) : Hash
+    }
+  }
+  
+  package "File System" <<Database>> LIGHTBLUE {
+    class "Attributes.ini" as AttrINI {
+      [Facet]
+      attribute=value
+      --
+      [File:path/to/file.rb]
+      git_object_id=...
+      review_status=0.0
+    }
+    
+    class "Priorities.ini" as PrioINI
+    class "attention_dump.json" as DumpJSON
+  }
+  
+  package "Rake Tasks" <<Component>> GREEN {
+    class "attention:core" as CoreTasks
+    class "attention:files" as FileTasks
+  }
+}
+
+' Relationships
+Attention --> Engine
+Attention --> Reader
+Attention --> Calculator
+Attention --> Dumper
+Attention --> Applier
+Attention --> Reporter
+Attention --> FileTracker
+
+FileTracker --> FileScanner : uses
+FileTracker --> GitIntegration : uses
+FileTracker --> AttrINI : writes
+
+Reader --> AttrINI : reads
+Reader --> PrioINI : reads
+
+FileTasks --> FileTracker : invokes
+CoreTasks --> Reader : invokes
+CoreTasks --> Dumper : invokes
+CoreTasks --> Applier : invokes
+CoreTasks --> Reporter : invokes
+
+note right of GitIntegration
+  Interfaces with Git to get
+  blob object IDs for files.
+  Falls back to manual hash
+  if not a Git repository.
+end note
+
+note bottom of FileScanner
+  Identifies trackable files
+  based on configuration
+  (extensions, excludes).
+end note
+
+note left of FileTracker
+  Orchestrates file scanning,
+  Git integration, and INI file
+  updates for file facets.
+end note
+
+@enduml

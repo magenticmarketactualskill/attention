@@ -1,0 +1,49 @@
+  "generated_at": "2025-11-02T12:40:27-0500",
+  "root_path": "/home/ubuntu/example_project",
+  "data": {
+    ".": {
+      "attributes": {
+        "TechnicalDebt": {
+          "code_coverage": 0.6,
+          "documentation": 0.4
+        },
+        "Security": {
+          "vulnerability_scan": 0.8,
+          "dependency_updates": 0.5
+        }
+      },
+      "priorities": {
+        "TechnicalDebt": {
+          "code_coverage": 0.7,
+          "documentation": 0.5
+        },
+        "Security": {
+          "vulnerability_scan": 0.9,
+          "dependency_updates": 0.6
+        }
+      }
+    },
+    "lib/core": {
+      "attributes": {
+        "TechnicalDebt": {
+          "code_coverage": 0.85,
+          "documentation": 0.9,
+          "refactoring_needed": 0.3
+        },
+        "Security": {
+          "vulnerability_scan": 0.8,
+          "dependency_updates": 0.5
+        },
+        "Architecture": {
+          "modularity": 0.7,
+          "api_design": 0.8
+        }
+      },
+      "priorities": {
+        "TechnicalDebt": {
+          "code_coverage": 0.7,
+          "documentation": 0.5,
+          "refactoring_needed": 0.8
+        },
+        "Security": {
+          "vulnerability_scan": 0.9,
