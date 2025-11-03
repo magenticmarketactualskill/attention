@@ -1,6 +1,6 @@
 namespace :attention do
   desc "Read all Attributes.ini and Priorities.ini files in the repository"
-  task :read_repo => :environment do
+  task :read_repo do
     reader = Attention::Reader.new
     data = reader.read_repo
 
@@ -26,7 +26,7 @@ namespace :attention do
 
   namespace :dump do
     desc "Create attention_dump.json with all Attributes.ini and Priorities.ini content"
-    task :repo => :environment do
+    task :repo do
       dumper = Attention::Dumper.new
       result = dumper.dump_repo
 
@@ -41,7 +41,7 @@ namespace :attention do
 
   namespace :apply do
     desc "Write Attributes.ini and Priorities.ini content from attention_dump.json"
-    task :repo => :environment do
+    task :repo do
       applier = Attention::Applier.new
       result = applier.apply_repo
 
@@ -56,7 +56,7 @@ namespace :attention do
 
   namespace :report do
     desc "Generate priority list report (sorted by urgency)"
-    task :priority_list => :environment do
+    task :priority_list do
       reporter = Attention::Reporter.new
       report = reporter.priority_list
 
@@ -64,7 +64,7 @@ namespace :attention do
     end
 
     desc "Generate detailed report with all metrics"
-    task :detailed => :environment do
+    task :detailed do
       reporter = Attention::Reporter.new
       report = reporter.detailed_report
 
@@ -89,8 +89,99 @@ namespace :attention do
     end
   end
 
+  desc "Test that all metadata files are proper INI format with default sections"
+  task :test_metadata do
+    require 'inifile'
+    
+    puts "=" * 80
+    puts "ATTENTION: Testing Metadata Files"
+    puts "=" * 80
+    puts ""
+    
+    # Find all .ini files in .as directories
+    ini_files = Dir.glob("**/.as/**/*.ini")
+    
+    if ini_files.empty?
+      puts "No metadata files found."
+      exit 0
+    end
+    
+    puts "Found #{ini_files.size} metadata files to test:"
+    puts ""
+    
+    errors = []
+    warnings = []
+    
+    ini_files.each do |file_path|
+      print "Testing #{file_path}... "
+      
+      begin
+        # Try to parse as INI file
+        ini = IniFile.load(file_path)
+        
+        if ini.nil?
+          errors << "#{file_path}: Failed to parse as INI file"
+          puts "✗ FAILED"
+          next
+        end
+        
+        # Check if file has any sections
+        sections = ini.sections
+        content = ini.to_h
+        
+        if content.empty?
+          warnings << "#{file_path}: Empty INI file"
+          puts "⚠ EMPTY"
+        elsif sections.include?("global") && sections.size == 1
+          # Only has global section (parameters without section headers)
+          # This is acceptable but could be better organized
+          puts "✓ OK (global)"
+        elsif sections.any?
+          # Has proper named sections
+          puts "✓ OK"
+        else
+          # This shouldn't happen with inifile gem, but just in case
+          errors << "#{file_path}: No sections found"
+          puts "✗ NO SECTIONS"
+        end
+        
+      rescue => e
+        errors << "#{file_path}: Parse error - #{e.message}"
+        puts "✗ ERROR"
+      end
+    end
+    
+    puts ""
+    puts "=" * 80
+    puts "RESULTS"
+    puts "=" * 80
+    
+    if errors.empty? && warnings.empty?
+      puts "✓ All metadata files are properly formatted!"
+    else
+      if warnings.any?
+        puts ""
+        puts "WARNINGS (#{warnings.size}):"
+        warnings.each { |warning| puts "  ⚠ #{warning}" }
+      end
+      
+      if errors.any?
+        puts ""
+        puts "ERRORS (#{errors.size}):"
+        errors.each { |error| puts "  ✗ #{error}" }
+        puts ""
+        puts "Please fix the above errors before proceeding."
+        exit 1
+      end
+    end
+    
+    puts ""
+    puts "Tested #{ini_files.size} files: #{ini_files.size - errors.size - warnings.size} OK, #{warnings.size} warnings, #{errors.size} errors"
+  end
+
   desc "Show attention gem status"
-  task :status => :environment do
+  task :status do
+    require_relative '../attention'
     puts "Attention Gem v#{Attention::VERSION}"
     puts "Root path: #{Attention.root_path}"
     puts ""
@@ -98,6 +189,7 @@ namespace :attention do
     puts "  rake attention:read_repo          - Read all INI files"
     puts "  rake attention:dump:repo          - Export to JSON"
     puts "  rake attention:apply:repo         - Import from JSON"
+    puts "  rake attention:test_metadata      - Test metadata files format"
     puts "  rake attention:report:priority_list - Generate priority report"
     puts "  rake attention:report:detailed    - Generate detailed report"
     puts ""

@@ -1,5 +1,6 @@
 require 'fileutils'
 require 'pathname'
+require 'inifile'
 
 module Attention
   class MetadataGenerator
@@ -47,31 +48,22 @@ module Attention
       # Generate TechnicalDebt.ini
       technical_debt_file = as_folder_path.join('TechnicalDebt.ini')
       if force || !technical_debt_file.exist?
-        relative_path = dir.relative_path_from(@root_path)
-        folder_name = relative_path.to_s == '.' ? @root_path.basename : relative_path.basename
-        
-        content = generate_technical_debt_content(dir, folder_name)
-        File.write(technical_debt_file, content)
+        create_folder_ini_file(technical_debt_file, dir, 'Technical Debt attributes')
         files_created += 1
       end
       
       # Generate Security.ini
       security_file = as_folder_path.join('Security.ini')
       if force || !security_file.exist?
-        relative_path = dir.relative_path_from(@root_path)
-        folder_name = relative_path.to_s == '.' ? @root_path.basename : relative_path.basename
-        
-        content = generate_security_content(dir, folder_name)
-        File.write(security_file, content)
+        create_folder_ini_file(security_file, dir, 'Security Attributes')
         files_created += 1
       end
       
       # Generate Priorities.ini if there are trackable files or subdirectories
       priorities_file = as_folder_path.join('Priorities.ini')
       if force || !priorities_file.exist?
-        content = generate_folder_priorities_content(dir)
-        if content && !content.strip.empty?
-          File.write(priorities_file, content)
+        if should_create_priorities_file(dir)
+          create_folder_priorities_file(priorities_file, dir)
           files_created += 1
         end
       end
@@ -92,8 +84,7 @@ module Attention
       # Generate TechnicalDebt.ini for the file
       technical_debt_file = as_file_path.join('TechnicalDebt.ini')
       if force || !technical_debt_file.exist?
-        content = generate_file_technical_debt_content(file)
-        File.write(technical_debt_file, content)
+        create_file_ini_file(technical_debt_file, file, 'Technical Debt attributes')
         files_created += 1
       end
 
@@ -135,78 +126,74 @@ module Attention
       files.sort
     end
 
-    def generate_technical_debt_content(dir, folder_name)
+    def create_folder_ini_file(file_path, dir, description)
       relative_path = dir.relative_path_from(@root_path)
-      path_description = relative_path.to_s == '.' ? folder_name : relative_path.to_s
+      path_description = relative_path.to_s == '.' ? @root_path.basename.to_s : relative_path.to_s
       
-      <<~CONTENT
-        # #{relative_path.join('.as', 'folder', 'TechnicalDebt.ini')}
-        #   - Technical Debt attributes for folder #{path_description}
-
-        [TechnicalDebt]
-        documentation=0.4
-      CONTENT
+      ini = IniFile.new(filename: file_path.to_s)
+      
+      # Add Default section with documentation
+      ini['Default']['documentation'] = 0.4
+      
+      ini.save
+      
+      # Add header comments manually
+      add_header_comments(file_path, relative_path.join('.as', 'folder', File.basename(file_path)), "#{description} for folder #{path_description}")
     end
 
-    def generate_security_content(dir, folder_name)
-      relative_path = dir.relative_path_from(@root_path)
-      path_description = relative_path.to_s == '.' ? folder_name : relative_path.to_s
+    def create_file_ini_file(file_path, file, description)
+      relative_path = file.relative_path_from(@root_path)
       
-      <<~CONTENT
-        # #{relative_path.join('.as', 'folder', 'Security.ini')}
-        #   - Security Attributes for folder #{path_description}
-
-        [Security]
-        documentation=0.4
-      CONTENT
+      ini = IniFile.new(filename: file_path.to_s)
+      
+      # Add Default section with documentation
+      ini['Default']['documentation'] = 0.4
+      
+      ini.save
+      
+      # Add header comments manually
+      add_header_comments(file_path, relative_path.dirname.join('.as', 'file', file.basename, File.basename(file_path)), "#{description} for file #{relative_path}")
     end
 
-    def generate_folder_priorities_content(dir)
+    def add_header_comments(file_path, ini_path, description)
+      content = File.read(file_path)
+      header = "# #{ini_path}\n#   - #{description}\n\n"
+      File.write(file_path, header + content)
+    end
+
+    def should_create_priorities_file(dir)
       # Check if directory has Ruby files or subdirectories that might need priorities
       has_ruby_files = Dir.glob(dir.join('*.rb')).any?
       has_subdirs = Dir.glob(dir.join('*/')).any? { |d| !File.basename(d).start_with?('.') }
       
-      return nil unless has_ruby_files || has_subdirs
+      has_ruby_files || has_subdirs
+    end
+
+    def create_folder_priorities_file(file_path, dir)
+      relative_path = dir.relative_path_from(@root_path)
       
-      content = []
+      ini = IniFile.new(filename: file_path.to_s)
+      
+      has_ruby_files = Dir.glob(dir.join('*.rb')).any?
       
       if has_ruby_files
-        content << "[TechnicalDebt]"
-        content << "refactoring_needed=0.8"
-        content << ""
-        content << "[Architecture]"
-        content << "modularity=0.6"
-        content << "api_design=0.7"
-        content << ""
+        ini['TechnicalDebt']['refactoring_needed'] = 0.8
+        ini['Architecture']['modularity'] = 0.6
+        ini['Architecture']['api_design'] = 0.7
       end
       
       # Add operator priorities for service directories
       if dir.basename.to_s.include?('service') || dir.basename.to_s.include?('event')
-        content << "[Operator]"
-        content << "event_processing_works=1.0"
-        content << "message_queue_healthy=0.8"
-        content << "error_rate_acceptable=0.9"
-        content << ""
-        content << "[Performance]"
-        content << "response_time_sla=0.8"
-        content << "throughput_target=0.7"
-        content << ""
+        ini['Operator']['event_processing_works'] = 1.0
+        ini['Operator']['message_queue_healthy'] = 0.8
+        ini['Operator']['error_rate_acceptable'] = 0.9
+        ini['Performance']['response_time_sla'] = 0.8
+        ini['Performance']['throughput_target'] = 0.7
       end
       
-      content.join("\n")
+      ini.save
     end
 
-    def generate_file_technical_debt_content(file)
-      relative_path = file.relative_path_from(@root_path)
-      filename = file.basename.to_s
-      
-      <<~CONTENT
-        # #{relative_path.dirname.join('.as', 'file', filename, 'TechnicalDebt.ini')}
-        #   - Technical Debt attributes for file #{relative_path}
 
-        [TechnicalDebt]
-        documentation=0.4
-      CONTENT
-    end
   end
 end
