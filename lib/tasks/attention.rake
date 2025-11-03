@@ -100,5 +100,16 @@ namespace :attention do
     puts "  rake attention:apply:repo         - Import from JSON"
     puts "  rake attention:report:priority_list - Generate priority report"
     puts "  rake attention:report:detailed    - Generate detailed report"
+    puts ""
+    puts "Metadata generation:"
+    puts "  rake attention:metadata:generate  - Generate .as metadata files"
+    puts "  rake attention:metadata:generate[force] - Force regenerate all metadata"
+    puts "  rake attention:metadata:structure - Show metadata structure"
+    puts "  rake attention:metadata:folder[dir] - Generate metadata for folder"
+    puts "  rake attention:metadata:file[path] - Generate metadata for file"
+    puts ""
+    puts "File tracking:"
+    puts "  rake attention:files:scan         - Scan and create file facets"
+    puts "  rake attention:files:stats        - Show file tracking statistics"
   end
 end

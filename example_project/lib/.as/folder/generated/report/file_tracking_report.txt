@@ -1,0 +1,124 @@
+================================================================================
+ATTENTION GEM - FILE TRACKING TEST
+================================================================================
+
+Root path: /home/ubuntu/example_project
+
+TEST 1: Git Repository Detection
+--------------------------------------------------------------------------------
+✓ Git repository detected
+
+TEST 2: Scanning for Trackable Files
+--------------------------------------------------------------------------------
+Found trackable files in 4 directories:
+  lib/core:
+    - base_service.rb
+  lib/utils:
+    - logger.rb
+  services/events:
+    - event_processor.rb
+    - message_handler.rb
+  services/notifications:
+    - email_sender.rb
+
+TEST 3: Generating File Facets
+--------------------------------------------------------------------------------
+✓ Processed 4 directories: created 0, updated 1 file facets
+  Directories processed: 4
+  File facets created: 0
+  File facets updated: 1
+
+TEST 4: File Tracking Statistics
+--------------------------------------------------------------------------------
+services/events:
+  File facets: 2
+  Manual facets: 3
+  Total: 5
+
+services/notifications:
+  File facets: 1
+  Manual facets: 2
+  Total: 3
+
+lib/core:
+  File facets: 1
+  Manual facets: 2
+  Total: 3
+
+lib/utils:
+  File facets: 1
+  Manual facets: 2
+  Total: 3
+
+TEST 5: Sample Attributes.ini with File Facets
+--------------------------------------------------------------------------------
+Content of services/events/Attributes.ini:
+
+  [Operator]
+  event_processing_works = 0.0
+  message_queue_healthy = 0.9
+  error_rate_acceptable = 0.7
+  
+  [TechnicalDebt]
+  code_coverage = 0.2
+  documentation = 0.1
+  
+  [Performance]
+  response_time_sla = 0.6
+  throughput_target = 0.5
+  
+  [File:event_processor.rb]
+  git_object_id = 3654d9539dd557ccf851501b519238034f75e019
+  review_status = 0.0
+  
+  [File:message_handler.rb]
+  git_object_id = 1cdb078e7ca7003b4ce46e719651f1221202a74b
+  review_status = 0.0
+  
+
+TEST 6: Priority Report with File Facets
+--------------------------------------------------------------------------------
+Top 10 items by urgency (including file facets):
+
+ 1. [MANUAL] Operator                  event_processing_works        
+    Urgency: 1.0000 | Complete:   0.0% | Priority: 1.00 | Path: services/events
+
+ 2. [MANUAL] TechnicalDebt             code_coverage                 
+    Urgency: 0.7200 | Complete:  20.0% | Priority: 0.90 | Path: services/events
+
+ 3. [MANUAL] TechnicalDebt             refactoring_needed            
+    Urgency: 0.5600 | Complete:  30.0% | Priority: 0.80 | Path: lib/core
+
+ 4. [MANUAL] TechnicalDebt             documentation                 
+    Urgency: 0.5400 | Complete:  10.0% | Priority: 0.60 | Path: services/events
+
+ 5. [MANUAL] Performance               response_time_sla             
+    Urgency: 0.5000 | Complete:   0.0% | Priority: 0.50 | Path: services/notifications
+
+ 6. [MANUAL] Testing                   integration_tests             
+    Urgency: 0.4800 | Complete:  40.0% | Priority: 0.80 | Path: lib/utils
+
+ 7. [MANUAL] Performance               throughput_target             
+    Urgency: 0.3500 | Complete:  50.0% | Priority: 0.70 | Path: services/events
+
+ 8. [MANUAL] TechnicalDebt             code_coverage                 
+    Urgency: 0.3500 | Complete:  50.0% | Priority: 0.70 | Path: lib/utils
+
+ 9. [MANUAL] TechnicalDebt             documentation                 
+    Urgency: 0.3500 | Complete:  30.0% | Priority: 0.50 | Path: lib/utils
+
+10. [MANUAL] Performance               response_time_sla             
+    Urgency: 0.3200 | Complete:  60.0% | Priority: 0.80 | Path: services/events
+
+TEST 7: Git Object ID Tracking
+--------------------------------------------------------------------------------
+File: services/events/event_processor.rb
+Git Object ID: 3654d9539dd557ccf851501b519238034f75e019
+
+After modification:
+New Git Object ID: 2ee57739fbaaf515031b3ab72b06903e31a2d1c6
+Changed: Yes
+
+================================================================================
+All file tracking tests completed!
+================================================================================
