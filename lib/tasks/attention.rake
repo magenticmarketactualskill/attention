@@ -231,7 +231,15 @@ namespace :attention do
         sections = ini.sections
         content = ini.to_h
         
-        if content.empty?
+        # Check for duplicate sections by reading the raw file
+        raw_content = File.read(file_path)
+        section_headers = raw_content.scan(/^\[([^\]]+)\]/).flatten
+        duplicate_sections = section_headers.group_by(&:itself).select { |k, v| v.size > 1 }.keys
+        
+        if duplicate_sections.any?
+          errors << "#{file_path}: Duplicate section headers found: #{duplicate_sections.join(', ')}"
+          puts "✗ DUPLICATE SECTIONS"
+        elsif content.empty?
           warnings << "#{file_path}: Empty INI file"
           puts "⚠ EMPTY"
         elsif sections.include?("global") && sections.size == 1
