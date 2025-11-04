@@ -1,7 +1,8 @@
 namespace :attention do
   namespace :metadata do
     desc "Generate .as metadata files for all folders and files"
-    task :generate, [:force] => :environment do |t, args|
+    task :generate, [:force] do |t, args|
+      require_relative '../attention'
       force = args[:force] == 'true' || args[:force] == 'force'
       
       generator = Attention::MetadataGenerator.new
@@ -19,7 +20,8 @@ namespace :attention do
     end
 
     desc "Generate metadata for a specific folder"
-    task :folder, [:directory] => :environment do |t, args|
+    task :folder, [:directory] do |t, args|
+      require_relative '../attention'
       directory = args[:directory] || Attention.root_path
       
       generator = Attention::MetadataGenerator.new
@@ -33,7 +35,8 @@ namespace :attention do
     end
 
     desc "Generate metadata for a specific file"
-    task :file, [:file_path] => :environment do |t, args|
+    task :file, [:file_path] do |t, args|
+      require_relative '../attention'
       unless args[:file_path]
         puts "✗ Please specify a file path: rake attention:metadata:file[path/to/file.rb]"
         exit 1
@@ -50,7 +53,8 @@ namespace :attention do
     end
 
     desc "Show metadata structure for current project"
-    task :structure => :environment do
+    task :structure do
+      require_relative '../attention'
       root = Pathname.new(Attention.root_path)
       
       puts "=" * 80

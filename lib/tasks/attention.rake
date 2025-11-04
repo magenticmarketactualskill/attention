@@ -94,6 +94,103 @@ namespace :attention do
     end
   end
 
+  desc "Track git object IDs for example_project files and show changes"
+  task :git_note_changes do
+    require_relative '../attention'
+    
+    puts "=" * 80
+    puts "ATTENTION: Git Object ID Tracking for example_project"
+    puts "=" * 80
+    puts ""
+    
+    git_integration = Attention::GitIntegration.new
+    file_tracker = Attention::FileTracker.new
+    
+    unless git_integration.git_repository?
+      puts "✗ Not a git repository"
+      exit 1
+    end
+    
+    # Focus on example_project directory
+    example_project_path = "example_project"
+    
+    unless Dir.exist?(example_project_path)
+      puts "✗ example_project directory not found"
+      exit 1
+    end
+    
+    puts "Scanning example_project for file changes..."
+    puts ""
+    
+    # Get all trackable files in example_project
+    scanner = Attention::FileScanner.new
+    all_files = scanner.scan_repository
+    
+    changes_found = false
+    
+    all_files.each do |relative_dir, files|
+      next unless relative_dir.start_with?('example_project')
+      
+      dir_path = relative_dir == '.' ? '.' : relative_dir
+      full_dir_path = File.join('.', dir_path)
+      
+      files.each do |filename|
+        file_path = File.join(dir_path, filename)
+        
+        # Get current git object ID
+        current_object_id = git_integration.get_object_id(file_path)
+        
+        # Check if we have a stored object ID in metadata
+        attributes_file = File.join(dir_path, 'Attributes.ini')
+        
+        stored_object_id = nil
+        if File.exist?(attributes_file)
+          ini = IniFile.load(attributes_file)
+          file_facet = "File:#{filename}"
+          if ini.has_section?(file_facet)
+            stored_object_id = ini[file_facet]['git_object_id']
+          end
+        end
+        
+        # Compare and report changes
+        if stored_object_id && stored_object_id != current_object_id
+          changes_found = true
+          puts "CHANGED: #{file_path}"
+          puts "  Previous: #{stored_object_id}"
+          puts "  Current:  #{current_object_id}"
+          puts ""
+        elsif stored_object_id.nil?
+          changes_found = true
+          puts "NEW: #{file_path}"
+          puts "  Object ID: #{current_object_id}"
+          puts ""
+        end
+      end
+    end
+    
+    unless changes_found
+      puts "No file changes detected in example_project"
+    end
+    
+    puts "=" * 80
+    puts "Git Note Format Output:"
+    puts "=" * 80
+    
+    # Generate git note format
+    all_files.each do |relative_dir, files|
+      next unless relative_dir.start_with?('example_project')
+      
+      dir_path = relative_dir == '.' ? '.' : relative_dir
+      
+      files.each do |filename|
+        file_path = File.join(dir_path, filename)
+        current_object_id = git_integration.get_object_id(file_path)
+        
+        puts "note: #{file_path} -> #{current_object_id}"
+      end
+    end
+  end
+
   desc "Test that all metadata files are proper INI format with default sections"
   task :test_metadata do
     require 'inifile'
@@ -194,6 +291,7 @@ namespace :attention do
     puts "  rake attention:read_repo          - Read all INI files"
     puts "  rake attention:dump:repo          - Export to JSON"
     puts "  rake attention:apply:repo         - Import from JSON"
+    puts "  rake attention:git_note_changes   - Track git object IDs and show changes"
     puts "  rake attention:test_metadata      - Test metadata files format"
     puts "  rake attention:report:priority_list - Generate priority report"
     puts "  rake attention:report:detailed    - Generate detailed report"

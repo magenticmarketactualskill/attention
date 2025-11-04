@@ -1,7 +1,8 @@
 namespace :attention do
   namespace :files do
     desc "Scan directory and generate file facets with git object IDs"
-    task :scan, [:directory] => :environment do |t, args|
+    task :scan, [:directory] do |t, args|
+      require_relative '../attention'
       directory = args[:directory]
       
       tracker = Attention::FileTracker.new
@@ -23,7 +24,8 @@ namespace :attention do
     end
 
     desc "Update git_object_id for all tracked files"
-    task :update_git_ids, [:directory] => :environment do |t, args|
+    task :update_git_ids, [:directory] do |t, args|
+      require_relative '../attention'
       directory = args[:directory] || Attention.root_path
       
       tracker = Attention::FileTracker.new
@@ -38,7 +40,8 @@ namespace :attention do
     end
 
     desc "Remove facets for deleted files"
-    task :cleanup, [:directory] => :environment do |t, args|
+    task :cleanup, [:directory] do |t, args|
+      require_relative '../attention'
       directory = args[:directory] || Attention.root_path
       
       tracker = Attention::FileTracker.new
@@ -53,7 +56,8 @@ namespace :attention do
     end
 
     desc "Show file tracking statistics"
-    task :stats, [:directory] => :environment do |t, args|
+    task :stats, [:directory] do |t, args|
+      require_relative '../attention'
       directory = args[:directory] || Attention.root_path
       
       tracker = Attention::FileTracker.new
@@ -72,7 +76,8 @@ namespace :attention do
     end
 
     desc "List all tracked files"
-    task :list, [:directory] => :environment do |t, args|
+    task :list, [:directory] do |t, args|
+      require_relative '../attention'
       directory = args[:directory] || Attention.root_path
       
       scanner = Attention::FileScanner.new
