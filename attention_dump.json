@@ -1,49 +1,120 @@
-  "generated_at": "2025-11-02T12:40:27-0500",
-  "root_path": "/home/ubuntu/example_project",
+{
+  "generated_at": "2025-11-03T19:15:19-0500",
+  "root_path": "/Users/ericlaquer/Downloads/AttributesaAndPriorities/attention",
   "data": {
-    ".": {
-      "attributes": {
-        "TechnicalDebt": {
-          "code_coverage": 0.6,
-          "documentation": 0.4
-        },
-        "Security": {
-          "vulnerability_scan": 0.8,
-          "dependency_updates": 0.5
-        }
-      },
-      "priorities": {
-        "TechnicalDebt": {
-          "code_coverage": 0.7,
-          "documentation": 0.5
-        },
-        "Security": {
-          "vulnerability_scan": 0.9,
-          "dependency_updates": 0.6
-        }
-      }
-    },
-    "lib/core": {
+    "example_project/lib/core": {
       "attributes": {
         "TechnicalDebt": {
           "code_coverage": 0.85,
           "documentation": 0.9,
           "refactoring_needed": 0.3
         },
-        "Security": {
-          "vulnerability_scan": 0.8,
-          "dependency_updates": 0.5
-        },
         "Architecture": {
           "modularity": 0.7,
           "api_design": 0.8
+        },
+        "File:base_service.rb": {
+          "git_object_id": 84.0,
+          "review_status": 0.0
         }
       },
       "priorities": {
         "TechnicalDebt": {
-          "code_coverage": 0.7,
-          "documentation": 0.5,
           "refactoring_needed": 0.8
         },
-        "Security": {
-          "vulnerability_scan": 0.9,
+        "Architecture": {
+          "modularity": 0.6,
+          "api_design": 0.7
+        }
+      }
+    },
+    "example_project/lib/utils": {
+      "attributes": {
+        "TechnicalDebt": {
+          "code_coverage": 0.5,
+          "documentation": 0.3
+        },
+        "Testing": {
+          "unit_tests": 0.6,
+          "integration_tests": 0.4
+        },
+        "File:logger.rb": {
+          "git_object_id": 7.0,
+          "review_status": 0.0
+        }
+      },
+      "priorities": {
+        "Testing": {
+          "unit_tests": 0.7,
+          "integration_tests": 0.8
+        }
+      }
+    },
+    "example_project/services/events": {
+      "attributes": {
+        "Operator": {
+          "event_processing_works": 0.0,
+          "message_queue_healthy": 0.9,
+          "error_rate_acceptable": 0.7
+        },
+        "TechnicalDebt": {
+          "code_coverage": 0.2,
+          "documentation": 0.1
+        },
+        "Performance": {
+          "response_time_sla": 0.6,
+          "throughput_target": 0.5
+        },
+        "File:event_processor.rb": {
+          "git_object_id": 3654.0,
+          "review_status": 0.0
+        },
+        "File:message_handler.rb": {
+          "git_object_id": 1.0,
+          "review_status": 0.0
+        }
+      },
+      "priorities": {
+        "Operator": {
+          "event_processing_works": 1.0,
+          "message_queue_healthy": 0.8,
+          "error_rate_acceptable": 0.9
+        },
+        "TechnicalDebt": {
+          "code_coverage": 0.9,
+          "documentation": 0.6
+        },
+        "Performance": {
+          "response_time_sla": 0.8,
+          "throughput_target": 0.7
+        }
+      }
+    },
+    "example_project/services/notifications": {
+      "attributes": {
+        "Operator": {
+          "email_delivery_rate": 0.95,
+          "sms_delivery_rate": 0.92,
+          "push_notification_success": 0.88
+        },
+        "TechnicalDebt": {
+          "code_coverage": 0.7
+        },
+        "File:email_sender.rb": {
+          "git_object_id": 0.0,
+          "review_status": 0.0
+        }
+      },
+      "priorities": {
+        "Operator": {
+          "email_delivery_rate": 0.7,
+          "sms_delivery_rate": 0.8,
+          "push_notification_success": 0.6
+        },
+        "Performance": {
+          "response_time_sla": 0.5
+        }
+      }
+    }
+  }
+}

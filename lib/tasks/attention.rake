@@ -1,6 +1,7 @@
 namespace :attention do
   desc "Read all Attributes.ini and Priorities.ini files in the repository"
   task :read_repo do
+    require_relative '../attention'
     reader = Attention::Reader.new
     data = reader.read_repo
 
@@ -27,6 +28,7 @@ namespace :attention do
   namespace :dump do
     desc "Create attention_dump.json with all Attributes.ini and Priorities.ini content"
     task :repo do
+      require_relative '../attention'
       dumper = Attention::Dumper.new
       result = dumper.dump_repo
 
@@ -42,6 +44,7 @@ namespace :attention do
   namespace :apply do
     desc "Write Attributes.ini and Priorities.ini content from attention_dump.json"
     task :repo do
+      require_relative '../attention'
       applier = Attention::Applier.new
       result = applier.apply_repo
 
@@ -57,6 +60,7 @@ namespace :attention do
   namespace :report do
     desc "Generate priority list report (sorted by urgency)"
     task :priority_list do
+      require_relative '../attention'
       reporter = Attention::Reporter.new
       report = reporter.priority_list
 
@@ -65,6 +69,7 @@ namespace :attention do
 
     desc "Generate detailed report with all metrics"
     task :detailed do
+      require_relative '../attention'
       reporter = Attention::Reporter.new
       report = reporter.detailed_report
 
