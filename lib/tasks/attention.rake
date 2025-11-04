@@ -92,6 +92,32 @@ namespace :attention do
         puts ""
       end
     end
+
+    desc "Generate HTML table reports for each folder"
+    task :html_reports do
+      require_relative '../attention'
+      reporter = Attention::Reporter.new
+      result = reporter.generate_html_reports
+
+      if result[:success]
+        puts "✓ #{result[:message]}"
+        puts ""
+        puts "HTML reports created:"
+        result[:report_files].each do |file|
+          begin
+            relative_path = Pathname.new(file).relative_path_from(Pathname.new(Dir.pwd))
+            puts "  - #{relative_path}"
+          rescue ArgumentError
+            puts "  - #{file}"
+          end
+        end
+        puts ""
+        puts "Open reports in your browser by navigating to the appropriate .as/*/reports/index.html files"
+      else
+        puts "✗ Failed to generate HTML reports"
+        exit 1
+      end
+    end
   end
 
   desc "Track git object IDs for example_project files and show changes"
@@ -303,6 +329,7 @@ namespace :attention do
     puts "  rake attention:test_metadata      - Test metadata files format"
     puts "  rake attention:report:priority_list - Generate priority report"
     puts "  rake attention:report:detailed    - Generate detailed report"
+    puts "  rake attention:report:html_reports - Generate HTML table reports"
     puts ""
     puts "Metadata generation:"
     puts "  rake attention:metadata:generate  - Generate .as metadata files"

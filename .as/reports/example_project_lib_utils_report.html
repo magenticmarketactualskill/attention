@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attention Report: example_project/lib/utils</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            border-bottom: 3px solid #007acc;
+            padding-bottom: 10px;
+        }
+        .path-info {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-family: monospace;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #007acc;
+            color: white;
+            font-weight: 600;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        .value-cell {
+            text-align: right;
+            font-family: monospace;
+        }
+        .high-value { background-color: #d4edda; }
+        .medium-value { background-color: #fff3cd; }
+        .low-value { background-color: #f8d7da; }
+        .missing-value { 
+            background-color: #e9ecef; 
+            color: #6c757d;
+            font-style: italic;
+        }
+        .facet-name {
+            font-weight: 600;
+            color: #495057;
+        }
+        .timestamp {
+            color: #6c757d;
+            font-size: 0.9em;
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Attention Report</h1>
+        <div class="path-info">
+            <strong>Path:</strong> example_project/lib/utils
+        </div>
+        
+        <h2>Attributes & Priorities</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Entity (Facet)</th>
+                            <th>Documentation</th>
+                            <th>Git object id</th>
+                            <th>Review status</th>
+    </tr>
+</thead>
+<tbody>
+                        <tr>
+                            <td class="facet-name">File:logger.rb</td>
+                            <td class="value-cell missing-value">—</td>
+                            <td class="value-cell high-value">A: 7.00</td>
+                            <td class="value-cell low-value">A: 0.00</td>
+                        </tr>
+                        <tr>
+                            <td class="facet-name">Security</td>
+                            <td class="value-cell low-value">A: 0.40</td>
+                            <td class="value-cell missing-value">—</td>
+                            <td class="value-cell missing-value">—</td>
+                        </tr>
+                        <tr>
+                            <td class="facet-name">Technicaldebt</td>
+                            <td class="value-cell low-value">A: 0.40</td>
+                            <td class="value-cell missing-value">—</td>
+                            <td class="value-cell missing-value">—</td>
+                        </tr>
+            </tbody>
+        </table>
+        
+        <div class="timestamp">
+            Generated on 2025-11-03 at 20:09:57
+        </div>
+    </div>
+</body>
+</html>
